@@ -136,12 +136,18 @@
   <hop> <from>genero columns</from><to>VF-GENERO</to><enabled>Y</enabled> </hop>
   <hop> <from>GENERO</from><to>String operations</to><enabled>Y</enabled> </hop>
   <hop> <from>String operations</from><to>genero columns</to><enabled>Y</enabled> </hop>
-  <hop> <from>APLICACAO</from><to>Select values</to><enabled>Y</enabled> </hop>
+  <hop> <from>APLICACAO</from><to>aplicacao columns</to><enabled>Y</enabled> </hop>
   <hop> <from>aplicacao_produto_colluns</from><to>VF- APLICACAO_PRODUTO</to><enabled>Y</enabled> </hop>
   <hop> <from>seq_aplicacao_produto</from><to>aplicacao_produto_colluns</to><enabled>Y</enabled> </hop>
   <hop> <from>APLICACAO_PRODUTO</from><to>seq_aplicacao_produto</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select values</from><to>clean VF-APLICACAO</to><enabled>Y</enabled> </hop>
+  <hop> <from>aplicacao columns</from><to>clean VF-APLICACAO</to><enabled>Y</enabled> </hop>
   <hop> <from>clean VF-APLICACAO</from><to>VF-APLICACAO</to><enabled>Y</enabled> </hop>
+  <hop> <from>CARACTERISTICA</from><to>caracteristica columns</to><enabled>Y</enabled> </hop>
+  <hop> <from>caracteristica columns</from><to>clean VF-CARACTERISTICA</to><enabled>Y</enabled> </hop>
+  <hop> <from>clean VF-CARACTERISTICA</from><to>VF-CARACTERISTICA</to><enabled>Y</enabled> </hop>
+  <hop> <from>CARACTERISTICA_PRODUTO</from><to>seq_caracteristica_produto</to><enabled>Y</enabled> </hop>
+  <hop> <from>seq_caracteristica_produto</from><to>caracteristica_produto_columns</to><enabled>Y</enabled> </hop>
+  <hop> <from>caracteristica_produto_columns</from><to>VF-CARACTERISTICA-PRODUTO</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>GENERO</name>
@@ -903,8 +909,8 @@
     <lazy_conversion_active>N</lazy_conversion_active>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>172</xloc>
-      <yloc>433</yloc>
+      <xloc>127</xloc>
+      <yloc>434</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -949,14 +955,14 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>662</xloc>
-      <yloc>462</yloc>
+      <xloc>655</xloc>
+      <yloc>436</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Select values</name>
+    <name>aplicacao columns</name>
     <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
@@ -1007,8 +1013,8 @@
         <storage_type/>
       </meta>    </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>362</xloc>
-      <yloc>435</yloc>
+      <xloc>305</xloc>
+      <yloc>436</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1214,8 +1220,312 @@
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>496</xloc>
-      <yloc>431</yloc>
+      <xloc>479</xloc>
+      <yloc>434</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>CARACTERISTICA</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT &#x2a; FROM CARACTERISTICA</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>125</xloc>
+      <yloc>643</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>caracteristica columns</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>CTECOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>CTEDES</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>CTECOD</name>
+        <rename>CTECOD</rename>
+        <type>Integer</type>
+        <length>4</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>CTEDES</name>
+        <rename>CTEDES</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>318</xloc>
+      <yloc>645</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>clean VF-CARACTERISTICA</name>
+    <type>Delete</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <commit>100</commit>
+    <lookup>
+      <schema>public</schema>
+      <table>caracteristica</table>
+      <key>
+        <name>CTECOD</name>
+        <field>ctecod</field>
+        <condition>&#x3d;</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>CTEDES</name>
+        <field>ctedes</field>
+        <condition>&#x3d;</condition>
+        <name2/>
+      </key>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>491</xloc>
+      <yloc>646</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>VF-CARACTERISTICA</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <schema/>
+    <table>caracteristica</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>ctecod</column_name>
+          <stream_name>CTECOD</stream_name>
+        </field>
+        <field>
+          <column_name>ctedes</column_name>
+          <stream_name>CTEDES</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>670</xloc>
+      <yloc>649</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>CARACTERISTICA_PRODUTO</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT &#x2a; FROM CARACTERISTICA_PRODUTO</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>105</xloc>
+      <yloc>752</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>seq_caracteristica_produto</name>
+    <type>Sequence</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <valuename>seq_caracteristica_produto_nextval</valuename>
+      <use_database>Y</use_database>
+      <connection>Varejofacil Postgresql</connection>
+      <schema>public</schema>
+      <seqname>sq_carac_produto</seqname>
+      <use_counter>N</use_counter>
+      <counter_name/>
+      <start_at>1</start_at>
+      <increment_by>1</increment_by>
+      <max_value>999999999</max_value>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>310</xloc>
+      <yloc>752</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>caracteristica_produto_columns</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>CTECOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PROCOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>valuename</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>541</xloc>
+      <yloc>757</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>VF-CARACTERISTICA-PRODUTO</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <schema>public</schema>
+    <table>caracteristica_produto</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>id</column_name>
+          <stream_name>valuename</stream_name>
+        </field>
+        <field>
+          <column_name>ctecod</column_name>
+          <stream_name>CTECOD</stream_name>
+        </field>
+        <field>
+          <column_name>procod</column_name>
+          <stream_name>PROCOD</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>801</xloc>
+      <yloc>759</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
