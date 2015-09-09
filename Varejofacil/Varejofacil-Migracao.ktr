@@ -104,7 +104,7 @@
     <server>localhost</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>&#x24;&#x7b;POSTGRES_DATABASE_NAME&#x7d;</database>
+    <database>syspdvweb_daniel</database>
     <port>5432</port>
     <username>syspdvweb</username>
     <password>Encrypted 2be98afc86aa7f2e4cb79ce10bec3fd89</password>
@@ -154,8 +154,11 @@
   <hop> <from>seq_encarte_produto</from><to>encarte_produto_columns</to><enabled>Y</enabled> </hop>
   <hop> <from>encarte_produto_columns</from><to>VF-ENCARTE_PRODUTO</to><enabled>Y</enabled> </hop>
   <hop> <from>FUNCAO_PDV</from><to>funcao_pdv_columns</to><enabled>Y</enabled> </hop>
-  <hop> <from>funcao_pdv_columns</from><to>Delete</to><enabled>Y</enabled> </hop>
-  <hop> <from>Delete</from><to>VF-FUNCAO_PDV</to><enabled>Y</enabled> </hop>
+  <hop> <from>funcao_pdv_columns</from><to>clean VF-FUNCAO_PDV</to><enabled>Y</enabled> </hop>
+  <hop> <from>clean VF-FUNCAO_PDV</from><to>VF-FUNCAO_PDV</to><enabled>Y</enabled> </hop>
+  <hop> <from>impostos federais columns</from><to>VF-IMPOSTOS_FEDERAIS</to><enabled>Y</enabled> </hop>
+  <hop> <from>IMPOSTOS_FEDERAIS</from><to>seq_impostos federais</to><enabled>Y</enabled> </hop>
+  <hop> <from>seq_impostos federais</from><to>impostos federais columns</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>APLICACAO</name>
@@ -288,6 +291,58 @@
     </step>
 
   <step>
+    <name>ENCARTE_PRODUTO</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT &#x2a; FROM ENCARTE_PRODUTO</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>97</xloc>
+      <yloc>961</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>FUNCAO_PDV</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT &#x2a; FROM FUNCAO</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>91</xloc>
+      <yloc>1077</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>GENERO</name>
     <type>TableInput</type>
     <description/>
@@ -335,6 +390,32 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>100</xloc>
       <yloc>120</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>IMPOSTOS_FEDERAIS</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT &#x2a; FROM IMPOSTOS_FEDERAIS</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>75</xloc>
+      <yloc>1172</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -693,6 +774,114 @@
     </step>
 
   <step>
+    <name>VF-ENCARTE_PRODUTO</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <schema>public</schema>
+    <table>encarte_produto</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>ENCCOD</column_name>
+          <stream_name>ENCCOD</stream_name>
+        </field>
+        <field>
+          <column_name>PROCOD</column_name>
+          <stream_name>PROCOD</stream_name>
+        </field>
+        <field>
+          <column_name>ENCPROPRCOFE</column_name>
+          <stream_name>ENCPROPRCOFE</stream_name>
+        </field>
+        <field>
+          <column_name>id</column_name>
+          <stream_name>sq_encarte_produto_nextval</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>697</xloc>
+      <yloc>967</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>VF-FUNCAO_PDV</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <schema>public</schema>
+    <table>funcao_pdv</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>fuccod</column_name>
+          <stream_name>FUCCOD</stream_name>
+        </field>
+        <field>
+          <column_name>fucdes</column_name>
+          <stream_name>FUCDES</stream_name>
+        </field>
+        <field>
+          <column_name>funace</column_name>
+          <stream_name>FUCACE</stream_name>
+        </field>
+        <field>
+          <column_name>fucmf1</column_name>
+          <stream_name>FUCMF1</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>686</xloc>
+      <yloc>1074</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>VF-GENERO</name>
     <type>TableOutput</type>
     <description/>
@@ -792,6 +981,92 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>720</xloc>
       <yloc>120</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>VF-IMPOSTOS_FEDERAIS</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <schema>public</schema>
+    <table>impostos_federais</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>IMPFEDSIM</column_name>
+          <stream_name>IMPFEDSIM</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDDES</column_name>
+          <stream_name>IMPFEDDES</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDINC</column_name>
+          <stream_name>IMPFEDINC</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDALQ</column_name>
+          <stream_name>IMPFEDALQ</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDALQSAI</column_name>
+          <stream_name>IMPFEDALQSAI</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDRET</column_name>
+          <stream_name>IMPFEDRET</stream_name>
+        </field>
+        <field>
+          <column_name>IPMFEDOBS</column_name>
+          <stream_name>IPMFEDOBS</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDTIP</column_name>
+          <stream_name>IMPFEDTIP</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDST</column_name>
+          <stream_name>IMPFEDST</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDSTSAI</column_name>
+          <stream_name>IMPFEDSTSAI</stream_name>
+        </field>
+        <field>
+          <column_name>IMPFEDNATBAS</column_name>
+          <stream_name>IMPFEDNATBAS</stream_name>
+        </field>
+        <field>
+          <column_name>impfedid</column_name>
+          <stream_name>sq_impostos_federais_nextval</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>697</xloc>
+      <yloc>1171</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1192,6 +1467,213 @@
     </step>
 
   <step>
+    <name>clean VF-FUNCAO_PDV</name>
+    <type>Delete</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <commit>100</commit>
+    <lookup>
+      <schema>public</schema>
+      <table>funcao_pdv</table>
+      <key>
+        <name>FUCCOD</name>
+        <field>fuccod</field>
+        <condition>&#x3d;</condition>
+        <name2/>
+      </key>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>486</xloc>
+      <yloc>1072</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>encarte columns</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>ENCCOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>ENCDES</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>ENCDATINI</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>ENCDATFIM</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>ENCSTATUS</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>ENCTIPPRC</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>ENCCOD</name>
+        <rename>ENCCOD</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>400</xloc>
+      <yloc>862</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>encarte_produto_columns</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>ENCCOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PROCOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>ENCPROPRCOFE</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>sq_encarte_produto_nextval</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>ENCCOD</name>
+        <rename>ENCCOD</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>PROCOD</name>
+        <rename>PROCOD</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>484</xloc>
+      <yloc>967</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>funcao_pdv_columns</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>FUCCOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>FUCDES</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>FUCACE</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>FUCMF1</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>FUCCOD</name>
+        <rename>FUCCOD</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>295</xloc>
+      <yloc>1074</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>genero columns</name>
     <type>SelectValues</type>
     <description/>
@@ -1335,6 +1817,78 @@
     </step>
 
   <step>
+    <name>impostos federais columns</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>IMPFEDSIM</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDDES</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDINC</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDALQ</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDALQSAI</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDRET</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDRETSAI</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IPMFEDOBS</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDTIP</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDST</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDSTSAI</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>IMPFEDNATBAS</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>sq_impostos_federais_nextval</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>492</xloc>
+      <yloc>1187</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>secao columns</name>
     <type>SelectValues</type>
     <description/>
@@ -1440,6 +1994,35 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>310</xloc>
       <yloc>752</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>seq_encarte_produto</name>
+    <type>Sequence</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <valuename>sq_encarte_produto_nextval</valuename>
+      <use_database>Y</use_database>
+      <connection>Varejofacil Postgresql</connection>
+      <schema>public</schema>
+      <seqname>sq_encarte_produto</seqname>
+      <use_counter>N</use_counter>
+      <counter_name/>
+      <start_at>1</start_at>
+      <increment_by>1</increment_by>
+      <max_value>999999999</max_value>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>285</xloc>
+      <yloc>963</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1627,92 +2210,7 @@
     </step>
 
   <step>
-    <name>encarte columns</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>      <field>        <name>ENCCOD</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ENCDES</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ENCDATINI</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ENCDATFIM</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ENCSTATUS</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ENCTIPPRC</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>        <select_unspecified>N</select_unspecified>
-      <meta>        <name>ENCCOD</name>
-        <rename>ENCCOD</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>    </fields>     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>400</xloc>
-      <yloc>862</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>ENCARTE_PRODUTO</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>SysPDVServer Firebird</connection>
-    <sql>SELECT &#x2a; FROM ENCARTE_PRODUTO</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>97</xloc>
-      <yloc>961</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>seq_encarte_produto</name>
+    <name>seq_impostos federais</name>
     <type>Sequence</type>
     <description/>
     <distribute>Y</distribute>
@@ -1722,11 +2220,11 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-      <valuename>sq_encarte_produto_nextval</valuename>
+      <valuename>sq_impostos_federais_nextval</valuename>
       <use_database>Y</use_database>
       <connection>Varejofacil Postgresql</connection>
       <schema>public</schema>
-      <seqname>sq_encarte_produto</seqname>
+      <seqname>sq_impostos_federais</seqname>
       <use_counter>N</use_counter>
       <counter_name/>
       <start_at>1</start_at>
@@ -1734,290 +2232,8 @@
       <max_value>999999999</max_value>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>285</xloc>
-      <yloc>963</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>encarte_produto_columns</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>      <field>        <name>ENCCOD</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>PROCOD</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ENCPROPRCOFE</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>sq_encarte_produto_nextval</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>        <select_unspecified>N</select_unspecified>
-      <meta>        <name>ENCCOD</name>
-        <rename>ENCCOD</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>      <meta>        <name>PROCOD</name>
-        <rename>PROCOD</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>    </fields>     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>484</xloc>
-      <yloc>967</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>VF-ENCARTE_PRODUTO</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>Varejofacil Postgresql</connection>
-    <schema>public</schema>
-    <table>encarte_produto</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-        <field>
-          <column_name>ENCCOD</column_name>
-          <stream_name>ENCCOD</stream_name>
-        </field>
-        <field>
-          <column_name>PROCOD</column_name>
-          <stream_name>PROCOD</stream_name>
-        </field>
-        <field>
-          <column_name>ENCPROPRCOFE</column_name>
-          <stream_name>ENCPROPRCOFE</stream_name>
-        </field>
-        <field>
-          <column_name>id</column_name>
-          <stream_name>sq_encarte_produto_nextval</stream_name>
-        </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>697</xloc>
-      <yloc>967</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>FUNCAO_PDV</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>SysPDVServer Firebird</connection>
-    <sql>SELECT &#x2a; FROM FUNCAO</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>91</xloc>
-      <yloc>1077</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>VF-FUNCAO_PDV</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>Varejofacil Postgresql</connection>
-    <schema>public</schema>
-    <table>funcao_pdv</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-        <field>
-          <column_name>fuccod</column_name>
-          <stream_name>FUCCOD</stream_name>
-        </field>
-        <field>
-          <column_name>fucdes</column_name>
-          <stream_name>FUCDES</stream_name>
-        </field>
-        <field>
-          <column_name>funace</column_name>
-          <stream_name>FUCACE</stream_name>
-        </field>
-        <field>
-          <column_name>fucmf1</column_name>
-          <stream_name>FUCMF1</stream_name>
-        </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>686</xloc>
-      <yloc>1074</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>funcao_pdv_columns</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>      <field>        <name>FUCCOD</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>FUCDES</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>FUCACE</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>FUCMF1</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>        <select_unspecified>N</select_unspecified>
-      <meta>        <name>FUCCOD</name>
-        <rename>FUCCOD</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>    </fields>     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>295</xloc>
-      <yloc>1074</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Delete</name>
-    <type>Delete</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>Varejofacil Postgresql</connection>
-    <commit>100</commit>
-    <lookup>
-      <schema>public</schema>
-      <table>funcao_pdv</table>
-      <key>
-        <name>FUCCOD</name>
-        <field>fuccod</field>
-        <condition>&#x3d;</condition>
-        <name2/>
-      </key>
-    </lookup>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>490</xloc>
-      <yloc>1081</yloc>
+      <xloc>254</xloc>
+      <yloc>1183</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
