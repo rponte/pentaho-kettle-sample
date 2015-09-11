@@ -160,7 +160,7 @@
   <hop> <from>seq_impostos federais</from><to>impostos federais columns</to><enabled>Y</enabled> </hop>
   <hop> <from>impostos federais columns</from><to>clean VF-IMPOSTOS_FEDERAIS</to><enabled>Y</enabled> </hop>
   <hop> <from>clean VF-IMPOSTOS_FEDERAIS</from><to>VF-IMPOSTOS_FEDERAIS</to><enabled>Y</enabled> </hop>
-  <hop> <from>marca columns</from><to>VF-MARCA</to><enabled>Y</enabled> </hop>
+  <hop> <from>marca columns</from><to>VF-MARCA</to><enabled>N</enabled> </hop>
   <hop> <from>MARCA</from><to>marca columns</to><enabled>Y</enabled> </hop>
   <hop> <from>clean natureza</from><to>VF-NATUREZA_IMPOSTOS_FEDERAIS</to><enabled>Y</enabled> </hop>
   <hop> <from>natureza impostos federais columns</from><to>clean natureza</to><enabled>Y</enabled> </hop>
