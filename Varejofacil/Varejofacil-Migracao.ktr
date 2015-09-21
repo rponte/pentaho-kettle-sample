@@ -172,6 +172,9 @@
   <hop> <from>Select values</from><to>Insert &#x2f; Update - VF-NCM</to><enabled>Y</enabled> </hop>
   <hop> <from>Insert &#x2f; Update - VF-NCM</from><to>Filter rows - NCM_EXCECAO</to><enabled>Y</enabled> </hop>
   <hop> <from>Filter rows - NCM_EXCECAO</from><to>Insert &#x2f; Update - VF-NCM_EXCECAO</to><enabled>Y</enabled> </hop>
+  <hop> <from>RAMO</from><to>collumns ramo</to><enabled>Y</enabled> </hop>
+  <hop> <from>collumns ramo</from><to>Filter rows</to><enabled>N</enabled> </hop>
+  <hop> <from>Filter rows</from><to>Insert &#x2f; Update - VF-RAMO</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>APLICACAO</name>
@@ -356,6 +359,35 @@
     </step>
 
   <step>
+    <name>Filter rows - NCM_EXCECAO</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<send_true_to>Insert &#x2f; Update - VF-NCM_EXCECAO</send_true_to>
+<send_false_to/>
+    <compare>
+<condition>
+ <negated>N</negated>
+ <leftvalue>NCMCODEXC</leftvalue>
+ <function>IS NOT NULL</function>
+ <rightvalue/>
+ </condition>
+    </compare>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>788</xloc>
+      <yloc>1868</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>GENERO</name>
     <type>TableInput</type>
     <description/>
@@ -434,6 +466,126 @@
     </step>
 
   <step>
+    <name>Insert &#x2f; Update - VF-NCM</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <commit>1000</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema>public</schema>
+      <table>ncm</table>
+      <key>
+        <name>NCMCOD</name>
+        <field>ncm_codigo</field>
+        <condition>&#x3d;</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>ncm_codigo</name>
+        <rename>NCMCOD</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ncm_descricao</name>
+        <rename>NCMDES</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ncm_aliquota_ipi</name>
+        <rename>NCMALQIPI</rename>
+        <update>N</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>538</xloc>
+      <yloc>1865</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Insert &#x2f; Update - VF-NCM_EXCECAO</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>Varejofacil Postgresql</connection>
+    <commit>1000</commit>
+    <update_bypassed>Y</update_bypassed>
+    <lookup>
+      <schema>public</schema>
+      <table>ncm_excecao</table>
+      <key>
+        <name>NCMCOD_1</name>
+        <field>ncm_codigo</field>
+        <condition>&#x3d;</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>NCMCODEXC</name>
+        <field>nex_codigo</field>
+        <condition>&#x3d;</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>nex_id</name>
+        <rename>sq_ncm_excecao_nextval</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ncm_codigo</name>
+        <rename>NCMCOD</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>nex_codigo</name>
+        <rename>NCMCODEXC</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>nex_descricao</name>
+        <rename>NCMDESEXC</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>nex_aliquota_ipi</name>
+        <rename>NCMALQIPI_1</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>nex_aliquota_nacional</name>
+        <rename>NCMALQNAC</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>nex_aliquota_importado</name>
+        <rename>NCMALQIMP_1</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1048</xloc>
+      <yloc>1867</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>MARCA</name>
     <type>TableInput</type>
     <description/>
@@ -486,6 +638,32 @@
     </step>
 
   <step>
+    <name>NCM_e_NCM_AUXILIAR</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT&#xa;  NCM.NCMCOD&#xa;, NCM.NCMDES&#xa;, NCM.NCMALQNAC&#xa;, NCM.NCMALQIMP&#xa;, NCM.NCMALQIPI&#xa;, NCM_AUX.NCMCOD AS NCMCOD_NCM_AUX&#xa;, NCM_AUX.NCMCODEXC&#xa;, NCM_AUX.NCMDESEXC&#xa;, NCM_AUX.NCMALQIPI AS NCMALQIPI_NCM_AUX&#xa;, NCM_AUX.NCMALQIMP AS NCMALQIMP_NCM_AUX&#xa;FROM NCM AS NCM&#xa;left join ncm_auxiliar NCM_AUX &#xa;	on &#x28;NCM_AUX.ncmcod &#x3d; NCM.ncmcod&#x29;&#xa;</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>136</xloc>
+      <yloc>1744</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>SECAO</name>
     <type>TableInput</type>
     <description/>
@@ -533,6 +711,115 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>100</xloc>
       <yloc>220</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>NCMCOD</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMDES</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMALQNAC</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMALQIMP</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMALQIPI</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMCOD_1</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMCODEXC</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMDESEXC</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMALQIPI_1</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>NCMALQIMP_1</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>sq_ncm_excecao_nextval</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>NCMCOD</name>
+        <rename>NCMCOD</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>NCMCOD_1</name>
+        <rename>NCMCOD_1</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>NCMCODEXC</name>
+        <rename>NCMCODEXC</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>361</xloc>
+      <yloc>1867</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -2459,6 +2746,35 @@
     </step>
 
   <step>
+    <name>seq_ncm_excecao 2</name>
+    <type>Sequence</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <valuename>sq_ncm_excecao_nextval</valuename>
+      <use_database>N</use_database>
+      <connection>Varejofacil Postgresql</connection>
+      <schema/>
+      <seqname>sq_ncm_excecao</seqname>
+      <use_counter>Y</use_counter>
+      <counter_name/>
+      <start_at>1</start_at>
+      <increment_by>1</increment_by>
+      <max_value>999999999</max_value>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>362</xloc>
+      <yloc>1744</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>seq_secao</name>
     <type>Sequence</type>
     <description/>
@@ -2612,7 +2928,33 @@
     </step>
 
   <step>
-    <name>Select values</name>
+    <name>RAMO</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>SysPDVServer Firebird</connection>
+    <sql>SELECT &#x2a; FROM RAMO</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>154</xloc>
+      <yloc>2050</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>collumns ramo</name>
     <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
@@ -2622,83 +2964,17 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <fields>      <field>        <name>NCMCOD</name>
+    <fields>      <field>        <name>RAMCOD</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
-      </field>      <field>        <name>NCMDES</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMALQNAC</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMALQIMP</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMALQIPI</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMCOD_1</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMCODEXC</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMDESEXC</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMALQIPI_1</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>NCMALQIMP_1</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>sq_ncm_excecao_nextval</name>
+      </field>      <field>        <name>RAMDES</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
       </field>        <select_unspecified>N</select_unspecified>
-      <meta>        <name>NCMCOD</name>
-        <rename>NCMCOD</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>      <meta>        <name>NCMCOD_1</name>
-        <rename>NCMCOD_1</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>      <meta>        <name>NCMCODEXC</name>
-        <rename>NCMCODEXC</rename>
+      <meta>        <name>RAMCOD</name>
+        <rename>RAMCOD</rename>
         <type>Integer</type>
         <length>-2</length>
         <precision>-2</precision>
@@ -2714,69 +2990,14 @@
         <storage_type/>
       </meta>    </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>361</xloc>
-      <yloc>1867</yloc>
+      <xloc>425</xloc>
+      <yloc>2049</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>NCM_e_NCM_AUXILIAR</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>SysPDVServer Firebird</connection>
-    <sql>SELECT&#xa;  NCM.NCMCOD&#xa;, NCM.NCMDES&#xa;, NCM.NCMALQNAC&#xa;, NCM.NCMALQIMP&#xa;, NCM.NCMALQIPI&#xa;, NCM_AUX.NCMCOD AS NCMCOD_NCM_AUX&#xa;, NCM_AUX.NCMCODEXC&#xa;, NCM_AUX.NCMDESEXC&#xa;, NCM_AUX.NCMALQIPI AS NCMALQIPI_NCM_AUX&#xa;, NCM_AUX.NCMALQIMP AS NCMALQIMP_NCM_AUX&#xa;FROM NCM AS NCM&#xa;left join ncm_auxiliar NCM_AUX &#xa;	on &#x28;NCM_AUX.ncmcod &#x3d; NCM.ncmcod&#x29;&#xa;</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>136</xloc>
-      <yloc>1744</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>seq_ncm_excecao 2</name>
-    <type>Sequence</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-      <valuename>sq_ncm_excecao_nextval</valuename>
-      <use_database>N</use_database>
-      <connection>Varejofacil Postgresql</connection>
-      <schema/>
-      <seqname>sq_ncm_excecao</seqname>
-      <use_counter>Y</use_counter>
-      <counter_name/>
-      <start_at>1</start_at>
-      <increment_by>1</increment_by>
-      <max_value>999999999</max_value>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>362</xloc>
-      <yloc>1744</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Insert &#x2f; Update - VF-NCM</name>
+    <name>Insert &#x2f; Update - VF-RAMO</name>
     <type>InsertUpdate</type>
     <description/>
     <distribute>Y</distribute>
@@ -2787,116 +3008,44 @@
            <schema_name/>
            </partitioning>
     <connection>Varejofacil Postgresql</connection>
-    <commit>1000</commit>
-    <update_bypassed>N</update_bypassed>
-    <lookup>
-      <schema>public</schema>
-      <table>ncm</table>
-      <key>
-        <name>NCMCOD</name>
-        <field>ncm_codigo</field>
-        <condition>&#x3d;</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>ncm_codigo</name>
-        <rename>NCMCOD</rename>
-        <update>N</update>
-      </value>
-      <value>
-        <name>ncm_descricao</name>
-        <rename>NCMDES</rename>
-        <update>N</update>
-      </value>
-      <value>
-        <name>ncm_aliquota_ipi</name>
-        <rename>NCMALQIPI</rename>
-        <update>N</update>
-      </value>
-    </lookup>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>538</xloc>
-      <yloc>1865</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Insert &#x2f; Update - VF-NCM_EXCECAO</name>
-    <type>InsertUpdate</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>Varejofacil Postgresql</connection>
-    <commit>1000</commit>
+    <commit>100</commit>
     <update_bypassed>Y</update_bypassed>
     <lookup>
-      <schema>public</schema>
-      <table>ncm_excecao</table>
+      <schema/>
+      <table>RAMO</table>
       <key>
-        <name>NCMCOD_1</name>
-        <field>ncm_codigo</field>
+        <name>RAMCOD</name>
+        <field>ramcod</field>
         <condition>&#x3d;</condition>
         <name2/>
       </key>
       <key>
-        <name>NCMCODEXC</name>
-        <field>nex_codigo</field>
+        <name>RAMDES</name>
+        <field>ramdes</field>
         <condition>&#x3d;</condition>
         <name2/>
       </key>
       <value>
-        <name>nex_id</name>
-        <rename>sq_ncm_excecao_nextval</rename>
+        <name>ramcod</name>
+        <rename>RAMCOD</rename>
         <update>N</update>
       </value>
       <value>
-        <name>ncm_codigo</name>
-        <rename>NCMCOD</rename>
-        <update>N</update>
-      </value>
-      <value>
-        <name>nex_codigo</name>
-        <rename>NCMCODEXC</rename>
-        <update>N</update>
-      </value>
-      <value>
-        <name>nex_descricao</name>
-        <rename>NCMDESEXC</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>nex_aliquota_ipi</name>
-        <rename>NCMALQIPI_1</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>nex_aliquota_nacional</name>
-        <rename>NCMALQNAC</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>nex_aliquota_importado</name>
-        <rename>NCMALQIMP_1</rename>
+        <name>ramdes</name>
+        <rename>RAMDES</rename>
         <update>Y</update>
       </value>
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1048</xloc>
-      <yloc>1867</yloc>
+      <xloc>751</xloc>
+      <yloc>2041</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Filter rows - NCM_EXCECAO</name>
+    <name>Filter rows</name>
     <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -2906,20 +3055,20 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-<send_true_to>Insert &#x2f; Update - VF-NCM_EXCECAO</send_true_to>
+<send_true_to>Insert &#x2f; Update - VF-RAMO</send_true_to>
 <send_false_to/>
     <compare>
 <condition>
  <negated>N</negated>
- <leftvalue>NCMCODEXC</leftvalue>
+ <leftvalue/>
  <function>IS NOT NULL</function>
  <rightvalue/>
  </condition>
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>788</xloc>
-      <yloc>1868</yloc>
+      <xloc>587</xloc>
+      <yloc>1984</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
